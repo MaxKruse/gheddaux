@@ -2,6 +2,8 @@ import logging
 import time
 from signal import signal, SIGINT
 
+import discord_slash
+
 from cogs.moderation import Moderation
 from cogs.redacted import Redacted
 from cogs.reports import Reports
@@ -29,6 +31,8 @@ if __name__ == "__main__":
         reports_admin_channel_id=Config()["REPORTS_ADMIN_CHANNEL_ID"],
         db_file=Config()["DB_FILE"]
     ).bot
+
+    slash = discord_slash.SlashCommand(bot, sync_commands=False)
 
     @bot.event
     async def on_command_error(ctx, exception) -> None:

@@ -2,6 +2,10 @@ import discord
 from discord.ext import commands
 from singletons.bot import Bot
 
+from discord_slash import cog_ext, SlashContext
+from discord_slash.utils.manage_commands import create_option
+from discord_slash.model import SlashCommandOptionType
+
 from utils import checks
 
 
@@ -20,6 +24,14 @@ class Moderation(commands.Cog):
 
 	@commands.command()
 	@checks.privileged()
+	@cog_ext.cog_slash(name="prune", description="Prune x messages in the current channel.", options=[
+		{
+			"name": "how_many",
+			"description": "How many messages should be pruned",
+			"type": SlashCommandOptionType.INT,
+			"required": True
+		}
+	])
 	async def prune(self, ctx, how_many: int) -> None:
 		"""
 		Deletes '<x>' messages in the current channel.
@@ -33,6 +45,20 @@ class Moderation(commands.Cog):
 
 	@commands.command()
 	@checks.privileged()
+	@cog_ext.cog_slash(name="prune", description="Prune x messages in the current channel.", options=[
+		{
+			"name": "how_many",
+			"description": "How many messages should be pruned",
+			"type": SlashCommandOptionType.INT,
+			"required": True
+		},
+		{
+			"name": "target",
+			"description": "Prune a users messages in the current channel",
+			"type": SlashCommandOptionType.USER,
+			"required": True
+		}
+	])
 	async def pruneu(self, ctx, member: discord.User, how_many: int) -> None:
 		"""
 		Deletes '<x>' messages sent by '<@user>' in the current channel.
